@@ -7,15 +7,24 @@
 ```
 $ go get -u github.com/zhangyuannie/goserve
 ```
+
 ## Usage
+
 ```
 goserve [options]
 ```
 
 Options:
+
 ```
--d  the directory to serve (default to the current directory)
--p  the port number (default 8000)
+-d string
+      directory to serve (default current directory)
+-p int
+      port number (default 8000)
+-password string
+      password for basic authentication (default none)
+-username string
+      username for basic authentication (default none)
 ```
 
 To serve the current directory on port `8001`:
