@@ -25,6 +25,8 @@ Options:
       password for basic authentication (default none)
 -username string
       username for basic authentication (default none)
+-version
+      print goserve version
 ```
 
 To serve the current directory on port `8001`:

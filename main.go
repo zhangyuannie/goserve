@@ -14,6 +14,7 @@ var portFlag = flag.Int("p", 8000, "port number")
 var dirFlag = flag.String("d", "", "directory to serve (default current directory)")
 var usernameFlag = flag.String("username", "", "username for basic authentication (default none)")
 var passwordFlag = flag.String("password", "", "password for basic authentication (default none)")
+var versionFlag = flag.Bool("version", false, "print goserve version")
 
 type responseRecord struct {
 	http.ResponseWriter
@@ -74,6 +75,12 @@ func auth(h http.Handler, username, password string) http.HandlerFunc {
 
 func main() {
 	flag.Parse()
+
+	if *versionFlag {
+		fmt.Println("goserve version 0.1.0")
+		return
+	}
+
 	if *dirFlag == "" {
 		wd, err := os.Getwd()
 		if err != nil {
