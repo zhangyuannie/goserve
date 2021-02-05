@@ -4,14 +4,57 @@ import (
 	"crypto/subtle"
 	"flag"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
+	"time"
 )
 
 var portFlag = flag.Int("p", 8000, "port number")
 var dirFlag = flag.String("d", "", "directory to serve (default current directory)")
 var usernameFlag = flag.String("username", "", "username for basic authentication (default none)")
 var passwordFlag = flag.String("password", "", "password for basic authentication (default none)")
+
+type responseRecord struct {
+	http.ResponseWriter
+	status int
+}
+
+func (r *responseRecord) WriteHeader(status int) {
+	r.status = status
+	r.ResponseWriter.WriteHeader(status)
+}
+
+func defaultHypen(s string) string {
+	if s == "" {
+		return "-"
+	}
+	return s
+}
+
+func handleLog(h http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		record := &responseRecord{
+			ResponseWriter: w,
+			status:         200,
+		}
+		h.ServeHTTP(record, r)
+
+		host, _, err := net.SplitHostPort(r.RemoteAddr)
+		if err != nil || host == "" {
+			host = "-"
+		}
+
+		fmt.Printf("%s - - %s \"%s %s %s\" %d - \"%s\" \"%s\"\n",
+			host,
+			time.Now().Format("[02/Jan/2006:15:04:05 -0700]"),
+			r.Method, r.URL, r.Proto,
+			record.status,
+			defaultHypen(r.Referer()),
+			defaultHypen(r.UserAgent()),
+		)
+	}
+}
 
 func auth(h http.Handler, username, password string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -43,6 +86,7 @@ func main() {
 	if *usernameFlag != "" && *passwordFlag != "" {
 		h = auth(h, *usernameFlag, *passwordFlag)
 	}
+	h = handleLog(h)
 
 	fmt.Printf("Serving %v on port %v\n", *dirFlag, *portFlag)
 	fmt.Printf("Available on http://localhost:%v\n", *portFlag)
