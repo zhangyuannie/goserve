@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+var hostFlag = flag.String("host", "", "address to listen on")
 var portFlag = flag.Int("p", 8000, "port number")
 var dirFlag = flag.String("d", "", "alternate directory to serve")
 var usernameFlag = flag.String("username", "", "username for basic authentication")
@@ -97,7 +98,7 @@ func main() {
 	}
 	h = handleLog(h)
 
-	addr := fmt.Sprintf(":%d", *portFlag)
+	addr := fmt.Sprintf("%v:%v", *hostFlag, *portFlag)
 
 	fmt.Printf("Serving %v on port %v\n", *dirFlag, *portFlag)
 
