@@ -1,6 +1,6 @@
 # goserve
 
-`goserve` is a simple command-line http server. It can be used as an alternative to `python3`'s `http.server`. It leverages go's standard library to do all the heavy lifting.
+`goserve` is a simple and secure command-line HTTP server. It can be used as an alternative to `python3`'s `http.server`. It leverages go's standard library to do all the heavy lifting.
 
 ## Installation
 
@@ -14,23 +14,39 @@ $ go get -u github.com/zhangyuannie/goserve
 goserve [options]
 ```
 
-Options:
+By default, the current working directory is served.
+
+### Options
 
 ```
--d string
-      directory to serve (default current directory)
--p int
-      port number (default 8000)
+-cert string
+      path to the TLS certificate file
+-dir string
+      alternate directory to serve
+-host string
+      address to listen on
+-key string
+      path to the TLS private key file
 -password string
-      password for basic authentication (default none)
+      password for basic authentication
+-port int
+      port number (default 8000)
 -username string
-      username for basic authentication (default none)
+      username for basic authentication
 -version
       print goserve version
 ```
 
+### Examples
+
 To serve the current directory on port `8001`:
 
 ```
-$ goserve -p 8001
+$ goserve --port 8001
+```
+
+To serve `/var/www/` over TLS:
+
+```
+$ goserve --dir /var/www/ --key key.pem --cert cert.pem
 ```
