@@ -11,9 +11,9 @@ import (
 )
 
 var portFlag = flag.Int("p", 8000, "port number")
-var dirFlag = flag.String("d", "", "directory to serve (default current directory)")
-var usernameFlag = flag.String("username", "", "username for basic authentication (default none)")
-var passwordFlag = flag.String("password", "", "password for basic authentication (default none)")
+var dirFlag = flag.String("d", "", "alternate directory to serve")
+var usernameFlag = flag.String("username", "", "username for basic authentication")
+var passwordFlag = flag.String("password", "", "password for basic authentication")
 var versionFlag = flag.Bool("version", false, "print goserve version")
 
 type responseRecord struct {
