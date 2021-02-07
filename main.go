@@ -11,8 +11,8 @@ import (
 )
 
 var hostFlag = flag.String("host", "", "address to listen on")
-var portFlag = flag.Int("p", 8000, "port number")
-var dirFlag = flag.String("d", "", "alternate directory to serve")
+var portFlag = flag.Int("port", 8000, "port number")
+var dirFlag = flag.String("dir", "", "alternate directory to serve")
 var usernameFlag = flag.String("username", "", "username for basic authentication")
 var passwordFlag = flag.String("password", "", "password for basic authentication")
 var certFlag = flag.String("cert", "", "path to the TLS certificate file")
