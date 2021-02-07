@@ -14,6 +14,8 @@ var portFlag = flag.Int("p", 8000, "port number")
 var dirFlag = flag.String("d", "", "alternate directory to serve")
 var usernameFlag = flag.String("username", "", "username for basic authentication")
 var passwordFlag = flag.String("password", "", "password for basic authentication")
+var certFlag = flag.String("cert", "", "path to the TLS certificate file")
+var keyFlag = flag.String("key", "", "path to the TLS private key file")
 var versionFlag = flag.Bool("version", false, "print goserve version")
 
 type responseRecord struct {
@@ -95,7 +97,15 @@ func main() {
 	}
 	h = handleLog(h)
 
+	addr := fmt.Sprintf(":%d", *portFlag)
+
 	fmt.Printf("Serving %v on port %v\n", *dirFlag, *portFlag)
-	fmt.Printf("Available on http://localhost:%v\n", *portFlag)
-	panic(http.ListenAndServe(fmt.Sprintf(":%d", *portFlag), h))
+
+	if *certFlag != "" && *keyFlag != "" {
+		fmt.Printf("Available on https://localhost:%v\n", *portFlag)
+		panic(http.ListenAndServeTLS(addr, *certFlag, *keyFlag, h))
+	} else {
+		fmt.Printf("Available on http://localhost:%v\n", *portFlag)
+		panic(http.ListenAndServe(addr, h))
+	}
 }
