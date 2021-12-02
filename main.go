@@ -80,7 +80,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Println("goserve version 0.2.0")
+		fmt.Println("goserve version 0.3.0")
 		return
 	}
 
