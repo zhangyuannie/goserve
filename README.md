@@ -5,7 +5,7 @@
 ## Installation
 
 ```
-$ go get -u github.com/zhangyuannie/goserve
+$ go install github.com/zhangyuannie/goserve
 ```
 
 ## Usage
